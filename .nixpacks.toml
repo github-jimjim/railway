@@ -1,0 +1,8 @@
+[phases.setup]
+nixPkgs = ["python3", "gcc"]
+
+[phases.build]
+cmds = ["chmod +x start.sh && chmod +x jomfish"]
+
+[phases.start]
+cmds = ["./start.sh"]
