@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jomfish - Chess Engine</title>
+    <link rel="stylesheet" href="/static/css/style_jomfish.css">
+</head>
+<body>
+    <header>
+        <h1>Jomfish - Chess Engine</h1>
+    </header>
+
+    <div class="hero">
+        <h2>Take Your Chess Game to the Next Level</h2>
+        <p>Built for chess enthusiasts, powered by Rust, and developed by a single individual.</p>
+        <button onclick="toggleDownload()">Download Now</button>
+        <div class="download-options" id="downloadOptions">
+            <a href="windows.html" target="_blank">Windows</a>
+            <a href="linux.html" target="_blank">Linux</a>
+            <a href="raspberry_pi.html" target="_blank">Raspberry Pi OS</a>
+        </div>
+    </div>
+
+    <div class="description">
+        <h3>About Jomfish</h3>
+        <p>Jomfish is a lightweight chess engine created as a personal project. It is written in Rust (more than 8.000 lines) and offers a unique perspective on chess AI development. While not as strong as Stockfish, it is a fun and competitive option for chess enthusiasts looking for something different.</p>
+    </div>
+
+    <div class="lichess-bots">
+        <h3>Play with Jomfish Bots on Lichess</h3>
+        <a href="https://lichess.org/@/jomfish_bot" target="_blank">Jomfish Bot - Running on a Lenovo P50</a>
+        <a href="https://lichess.org/@/Rustberry" target="_blank">Rustberry - Running on a Raspberry Pi 4b</a>
+		<a href="/game" target="_blank">Play against Jomfish</a>
+    </div>
+
+    <script>
+        function toggleDownload() {
+            const downloadOptions = document.getElementById('downloadOptions');
+            if (downloadOptions.style.display === 'none' || downloadOptions.style.display === '') {
+                downloadOptions.style.display = 'block';
+            } else {
+                downloadOptions.style.display = 'none';
+            }
+        }
+    </script>
+    
+    <footer>
+        &copy; 2024 Jimmy's Chess Engine. All rights reserved.
+    </footer>
+</body>
+</html>

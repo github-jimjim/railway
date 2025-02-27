@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chess vs Computer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #2c3e50;
+            color: #ecf0f1;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .board-container {
+            position: relative;
+            width: 640px;
+            height: 640px;
+            margin: 20px;
+        }
+          .chess-board {
+              display: grid;
+              grid-template-columns: repeat(8, 80px);  /* Fixed width squares */
+              grid-template-rows: repeat(8, 80px);     /* Fixed height squares */
+              gap: 0;
+              border: 4px solid #483C32;
+              width: fit-content;
+              margin: 40px auto;
+          }
+
+          .square {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 48px;
+              position: relative;
+              width: 80px;
+              height: 80px;
+          }
+
+          .white-square {
+              background-color: #FFFACD;  /* Light yellow for white squares */
+          }
+
+          .black-square {
+              background-color: #8B4513;  /* Saddle brown for black squares */
+          }
+
+          /* White pieces style */
+          .piece.white {
+              color: #FFFFFF;
+              text-shadow: 0 0 3px #000;
+          }
+
+          /* Black pieces style */
+          .piece.black {
+              color: #000000;
+              text-shadow: 0 0 3px #666;
+          }
+        .coordinates {
+            position: absolute;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .file-coord {
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .rank-coord {
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .move-input {
+            padding: 12px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            background: #ecf0f1;
+            color: #2c3e50;
+            width: 200px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: #3498db;
+            color: white;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .status {
+            margin: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #e74c3c;
+            text-align: center;
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+        }
+
+        .game-info {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: center;
+        }
+
+        .move-history {
+            margin-top: 20px;
+            padding: 15px;
+            background: #34495e;
+            border-radius: 5px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+          .selected {
+              background-color: rgba(255, 255, 0, 0.5) !important;
+          }
+
+          .legal-move {
+              position: relative;
+          }
+
+          .legal-move::after {
+              content: '';
+              position: absolute;
+              width: 20px;
+              height: 20px;
+              background-color: rgba(0, 255, 0, 0.3);
+              border-radius: 50%;
+          }
+
+          .piece {
+              cursor: pointer;
+              user-select: none;
+          }
+
+          .piece:hover {
+              transform: scale(1.1);
+              transition: transform 0.2s;
+          }
+        .last-move {
+            background: rgba(255, 255, 0, 0.2);
+        }
+
+        .help-text {
+            color: #bdc3c7;
+            font-size: 16px;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="status" id="status">
+            {% if game_over %}
+                Game Over!
+            {% elif player_turn %}
+                Your turn (White)
+            {% else %}
+                Computer's turn (Black)
+            {% endif %}
+        </div>
+
+        <div class="board-container">
+            <div class="chess-board" id="board">
+                {% for rank in range(8) %}
+                    {% for file in range(8) %}
+                        <div class="square {{ 'white-square' if (rank + file) % 2 == 0 else 'black-square' }}"
+                             data-square="{{ chr(97 + file) }}{{ 8 - rank }}">
+                            {% if file == 0 %}
+                                <span class="coordinates rank-coord">{{ 8 - rank }}</span>
+                            {% endif %}
+                            {% if rank == 7 %}
+                                <span class="coordinates file-coord">{{ chr(97 + file) }}</span>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="controls">
+            <input type="text" id="moveInput" class="move-input" placeholder="Enter move (e.g., e2e4)">
+            <button onclick="makeMove()">Make Move</button>
+            <button onclick="resetGame()">New Game</button>
+        </div>
+
+        <div class="game-info">
+            <div class="help-text">
+                Enter moves in algebraic notation (e.g., e2e4, Nf3, O-O for castling)
+            </div>
+            <div>You play as White ⚪ | Computer plays as Black ⚫</div>
+        </div>
+
+        <div class="move-history" id="moveHistory">
+        </div>
+    </div>
+
+    <script>
+
+// Add this inside your existing script tag
+let selectedSquare = null;
+
+$(document).on('click', '.square', function() {
+    const square = $(this).attr('data-square');
+    
+    if (selectedSquare === null) {
+        // First click - select piece
+        if ($(this).find('.piece.white').length) {
+            selectedSquare = square;
+            $(this).addClass('selected');
+            highlightLegalMoves(square);
+        }
+    } else {
+        // Second click - make move
+        const move = selectedSquare + square;
+        $.get(`/move/${move}`, function(data) {
+            if (data.status === 'success') {
+                updateBoard(data);
+                moveHistory.push(move);
+                updateMoveHistory();
+            }
+        });
+        
+        // Reset selection
+        $('.square').removeClass('selected');
+        $('.square').removeClass('legal-move');
+        selectedSquare = null;
+    }
+});
+
+function highlightLegalMoves(fromSquare) {
+    $.get('/legal_moves', function(data) {
+        data.moves.forEach(move => {
+            if (move.startsWith(fromSquare)) {
+                $(`.square[data-square="${move.substring(2,4)}"]`).addClass('legal-move');
+            }
+        });
+    });
+}
+
+        let moveHistory = [];
+
+        function makeMove() {
+            const move = $('#moveInput').val();
+            $.get(`/move/${move}`, function(data) {
+                if (data.status === 'success') {
+                    updateBoard(data);
+                    $('#moveInput').val('');
+                    moveHistory.push(move);
+                    updateMoveHistory();
+                } else {
+                    alert(data.message);
+                }
+            });
+        }
+
+        function resetGame() {
+            $.get('/reset', function(data) {
+                if (data.status === 'success') {
+                    updateBoard(data);
+                    $('#moveInput').val('');
+                    moveHistory = [];
+                    updateMoveHistory();
+                }
+            });
+        }
+
+        function updateBoard(data) {
+            updateBoardPosition(data.squares);
+            updateStatus(data);
+            highlightLastMove(data.last_move);
+        }
+
+        function updateBoardPosition(squares) {
+            $('.square').empty().append(function() {
+                const coords = $(this).find('.coordinates');
+                if (coords.length) return coords;
+            });
+
+            squares.forEach(square => {
+                if (square.piece) {
+                    const pieceSymbol = getPieceSymbol(square.piece, square.color);
+                    $(`.square[data-square="${square.square}"]`).append(
+                        `<span class="piece ${square.color}">${pieceSymbol}</span>`
+                    );
+                }
+            });
+        }
+
+        function getPieceSymbol(piece, color) {
+            const pieces = {
+                'P': '♙', 'N': '♘', 'B': '♗', 'R': '♖', 'Q': '♕', 'K': '♔',
+                'p': '♟', 'n': '♞', 'b': '♝', 'r': '♜', 'q': '♛', 'k': '♚'
+            };
+            return pieces[color === 'white' ? piece.toUpperCase() : piece.toLowerCase()];
+        }
+
+        function updateStatus(data) {
+            let status = '';
+            if (data.game_over) {
+                status = 'Game Over!';
+            } else if (data.player_turn) {
+                status = 'Your turn (White)';
+            } else {
+                status = 'Computer\'s turn (Black)';
+            }
+            $('#status').text(status);
+        }
+
+        function highlightLastMove(move) {
+            $('.square').removeClass('last-move');
+            if (move) {
+                const from = move.substring(0, 2);
+                const to = move.substring(2, 4);
+                $(`.square[data-square="${from}"]`).addClass('last-move');
+                $(`.square[data-square="${to}"]`).addClass('last-move');
+            }
+        }
+
+        function updateMoveHistory() {
+            const historyHtml = moveHistory.map((move, i) => 
+                `<div>Move ${i + 1}: ${move}</div>`
+            ).join('');
+            $('#moveHistory').html(historyHtml);
+        }
+
+        $('#moveInput').keypress(function(e) {
+            if(e.which == 13) {
+                makeMove();
+            }
+        });
+
+        // Initialize the board on page load
+        $(document).ready(function() {
+            resetGame();
+        });
+    </script>
+</body>
+</html>

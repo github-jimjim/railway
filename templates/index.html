@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_index.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>About Me</h1>
+        <p>
+            Hi! I'm Jimmy, a young programmer from Vietnam with a passion for coding, chess, and gaming.
+            I enjoy building projects like my own chess engine and experimenting with game development.
+        </p>
+        <div class="links">
+            <a href="https://github.com/github-jimjim" target="_blank">GitHub</a>
+            <a href="https://www.instagram.com/ig.jimjim/profilecard/?igsh=azJqOHhha3c4YXdn" target="_blank">Instagram</a>
+            <a href="{{ url_for('static', filename='game/game.html') }}" target="_blank">My Game</a>
+            <a href="{{ url_for('static', filename='chess/jomfish.html') }}" target="_blank">My Chess Engine</a>
+        </div>
+        <div class="buy-coffee">
+            <a href="https://buymeacoffee.com/jimjimdev" target="_blank">
+                <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" style="height: 50px; width: 190px;"/>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

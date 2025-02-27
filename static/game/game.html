@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jimmy's Laser Game</title>
+    <link rel="stylesheet" href="/static/css/style_game.css">
+</head>
+<body>
+    <header>
+        <h1>Jimmy's Laser Game</h1>
+    </header>
+
+    <div class="container">
+        <h5>Update 1.2 is in progress</h5>
+
+        <div class="content">
+            <div>
+                <h2>Laser Game for Laptops and PCs</h2>
+                <p><strong>Available for free!</strong></p>
+                <p>Looking for something fun? This dodge game is inspired by the popular game Subway Surfers. You play as a brick trying to dodge blue squares and destroy bricks with lasers. Control the brick using the keyboard keys <strong>A</strong> or <strong>D</strong>, or the left/right arrows. To shoot, press the <strong>spacebar</strong> or <strong>arrow up</strong>.</p>
+                <p>The game features a highscore board and more. It may not have top-notch graphics, but it’s perfect for small children. Best of all, it’s free and doesn’t require WiFi. Updates are released occasionally, so check back for new versions. Currently, the game is unavailable for smartphones and macOS—we apologize for the inconvenience.</p>
+
+                <button class="wp-block-button" onclick="showButtons()">Download</button>
+
+                <div class="transparent-buttons" id="transparent-buttons" style="display: none;">
+                    <a href="windows.html" target="_blank">Download for Windows</a>
+                    <a href="linux.html" target="_blank">Download for Linux</a>
+                    <a href="coming_soon.html" target="_blank">Coming Soon</a>
+                </div>
+
+                <script>
+                    function showButtons() {
+                        var transparentButtons = document.getElementById("transparent-buttons");
+                        transparentButtons.style.display = "block";
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2024 Jimmy's Laser Game. All rights reserved.
+    </footer>
+</body>
+</html>
