@@ -1,5 +1,0 @@
-[build]
-command = "chmod +x start.sh && chmod +x jomfish"
-
-[start]
-command = "./start.sh"
