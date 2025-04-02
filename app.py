@@ -4,6 +4,13 @@ import chess.engine
 from waitress import serve
 import os
 
+file_path = "/opt/venv/bin/jomfish"
+
+os.chmod(file_path, 0o755)
+
+print(f"Berechtigungen für {file_path} wurden geändert.")
+
+
 engine = chess.engine.SimpleEngine.popen_uci(["jomfish"])
 
 def get_formatted_board():
