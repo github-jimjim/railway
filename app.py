@@ -2,17 +2,11 @@ from flask import Flask, render_template, jsonify
 import chess
 import chess.engine
 from waitress import serve
-import os
-
-verzeichnis = "/workspace"  
-dateien = os.listdir(verzeichnis)
-
-print(dateien) 
 
 app = Flask(__name__)
 
 board = chess.Board()
-engine = chess.engine.SimpleEngine.popen_uci("jomfish")
+engine = chess.engine.SimpleEngine.popen_uci(["jomfish"])
 
 
 def get_formatted_board():
