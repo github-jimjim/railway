@@ -4,13 +4,14 @@ import chess.engine
 from waitress import serve
 import os
 
+print(os.listdir("/workspace/.heroku/python/lib/python3.13/site-packages/jomfish/bin/"))
 file_path = "/workspace/.heroku/python/lib/python3.13/site-packages/jomfish/bin/jomfish"
 os.chmod(file_path, 0o755)
 
 app = Flask(__name__)
 
 board = chess.Board()
-engine = chess.engine.SimpleEngine.popen_uci(["jomfish"])
+engine = chess.engine.SimpleEngine.popen_uci(["/workspace/.heroku/python/lib/python3.13/site-packages/jomfish/bin/jomfish"])
 
 
 def get_formatted_board():
