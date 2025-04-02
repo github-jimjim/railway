@@ -2,6 +2,12 @@ from flask import Flask, render_template, jsonify
 import chess
 import chess.engine
 from waitress import serve
+import os
+
+verzeichnis = "/workspace"  
+dateien = os.listdir(verzeichnis)
+
+print(dateien) 
 
 app = Flask(__name__)
 
