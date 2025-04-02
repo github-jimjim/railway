@@ -3,17 +3,8 @@ import chess
 import chess.engine
 from waitress import serve
 import os
-import shutil
 
-jomfish_path = shutil.which("jomfish")
-
-if not jomfish_path:
-    possible_path = "/workspace/.heroku/python/lib/python3.13/site-packages/jomfish/bin/jomfish"
-    if os.path.exists(possible_path):
-        jomfish_path = possible_path
-if not jomfish_path:
-    raise FileNotFoundError("Die jomfish-Binary wurde nicht gefunden!")
-
+jomfish_path = "/workspace/.heroku/python/bin/jomfish"
 os.chmod(jomfish_path, 0o755)
 print(f"Verwende jomfish-Binary: {jomfish_path}")
 
