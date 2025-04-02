@@ -3,16 +3,21 @@ import chess
 import chess.engine
 from waitress import serve
 import os
+import shutil
 
-print(os.listdir("/workspace/.heroku/python/lib/python3.13/site-packages/jomfish/bin/"))
-file_path = "/workspace/.heroku/python/lib/python3.13/site-packages/jomfish/bin/jomfish"
-os.chmod(file_path, 0o755)
+jomfish_path = shutil.which("jomfish")
 
-app = Flask(__name__)
+if not jomfish_path:
+    possible_path = "/workspace/.heroku/python/lib/python3.13/site-packages/jomfish/bin/jomfish"
+    if os.path.exists(possible_path):
+        jomfish_path = possible_path
+if not jomfish_path:
+    raise FileNotFoundError("Die jomfish-Binary wurde nicht gefunden!")
 
-board = chess.Board()
-engine = chess.engine.SimpleEngine.popen_uci(["/workspace/.heroku/python/lib/python3.13/site-packages/jomfish/bin/jomfish"])
+os.chmod(jomfish_path, 0o755)
+print(f"Verwende jomfish-Binary: {jomfish_path}")
 
+engine = chess.engine.SimpleEngine.popen_uci([jomfish_path])
 
 def get_formatted_board():
     unicode_pieces = {
