@@ -6,7 +6,8 @@ from waitress import serve
 app = Flask(__name__)
 
 board = chess.Board()
-engine = chess.engine.SimpleEngine.popen_uci("jomfish")
+engine = chess.engine.SimpleEngine.popen_uci("/workspace/jomfish")
+
 
 def get_formatted_board():
     unicode_pieces = {
