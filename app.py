@@ -11,6 +11,7 @@ os.chmod(file_path, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | 
 
 print(f"Berechtigungen für {file_path} wurden geändert.")
 
+app = Flask(__name__)
 
 engine = chess.engine.SimpleEngine.popen_uci(["jomfish"])
 
