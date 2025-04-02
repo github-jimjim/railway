@@ -4,11 +4,7 @@ import chess.engine
 from waitress import serve
 import os
 
-jomfish_path = "/workspace/.heroku/python/bin/jomfish"
-os.chmod(jomfish_path, 0o755)
-print(f"Verwende jomfish-Binary: {jomfish_path}")
-
-engine = chess.engine.SimpleEngine.popen_uci([jomfish_path])
+engine = chess.engine.SimpleEngine.popen_uci(["jomfish"])
 
 def get_formatted_board():
     unicode_pieces = {
