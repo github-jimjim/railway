@@ -3,10 +3,11 @@ import chess
 import chess.engine
 from waitress import serve
 import os
+import stat
 
-file_path = "/opt/venv/bin/jomfish"
+file_path = "/opt/venv/lib/python3.12/site-packages/jomfish/bin/jomfish"
 
-os.chmod(file_path, 0o755)
+os.chmod(file_path, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH)
 
 print(f"Berechtigungen für {file_path} wurden geändert.")
 
