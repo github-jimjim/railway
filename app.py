@@ -2,6 +2,10 @@ from flask import Flask, render_template, jsonify
 import chess
 import chess.engine
 from waitress import serve
+import os
+
+file_path = "/workspace/.heroku/python/lib/python3.13/site-packages/jomfish/bin/jomfish"
+os.chmod(file_path, 0o755)
 
 app = Flask(__name__)
 
